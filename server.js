@@ -33,14 +33,18 @@ app.prepare().then(() => {
   io.on("connection", (socket) => {
     console.log(`✅ Cliente conectado: ${socket.id}`)
 
-    socket.on("join_feedback", (feedbackId) => {
-      socket.join(`feedback_${feedbackId}`)
-      console.log(`📥 Socket ${socket.id} entrou na sala: feedback_${feedbackId}`)
+    // Sala única de chat
+    socket.join("chat_unico")
+    console.log(`📥 Socket ${socket.id} entrou no chat único`)
+
+    socket.on("join_chat", () => {
+      socket.join("chat_unico")
+      console.log(`📥 Socket ${socket.id} entrou explicitamente no chat único`)
     })
 
-    socket.on("leave_feedback", (feedbackId) => {
-      socket.leave(`feedback_${feedbackId}`)
-      console.log(`📤 Socket ${socket.id} saiu da sala: feedback_${feedbackId}`)
+    socket.on("leave_chat", () => {
+      socket.leave("chat_unico")
+      console.log(`📤 Socket ${socket.id} saiu do chat único`)
     })
 
     socket.on("disconnect", () => {
